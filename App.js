@@ -1,20 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import TransactionsList from './screens/TransactionsList';
+import TransactionDetail from './screens/TransactionDetail';
+import Summary from './screens/Summary';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function App() {
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const TransactionsStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="TransactionsList" component={TransactionsList} options={{ title: 'Transactions List' }} />
+    <Stack.Screen name="TransactionDetail" component={TransactionDetail} options={{ title: 'Transaction Detail' }} />
+  </Stack.Navigator>
+);
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Transactions"
+          component={TransactionsStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="list" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Summary"
+          component={Summary}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="pie-chart" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
